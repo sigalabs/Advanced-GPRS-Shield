@@ -21,7 +21,11 @@
 # 1)An Arduino UNO, MEGA or compatible board                                             # 
 # 2)An Advanced GPRS Shield from SiGAlabs (http://www.sigalabs.com)                      #
 # 3)The Arduino library of the shield copied to your <ArduinoIDE>\libraries subdirectory #
+<<<<<<< HEAD
 #    Download it from here (http://github.com/sigalabs/Advanced-GPRS-Shield)             #
+=======
+#   Download it from here (http://github.com/sigalabs/Advanced-GPRS-Shield)              #
+>>>>>>> 0402b4d3b16910a6abeb24eb9731ccb77fd2a038
 # 4)A SIM Card from your provider with PIN CODE DISABLED                                 #
 ########################################################################################## 
 */
@@ -133,8 +137,8 @@ void loop()
                   
               if (strstr(subStr(sms_text," ",2), "ANALOG") != NULL) 
               {  
-                  sprintf(string, "A0:%imV A:%imV A2:%imV A3:%imV A4:%imV A5:%imV", analogRead(A0)*4.882,analogRead(A1)*4.882,analogRead(A2)*4.882,analogRead(A3)*4.882,analogRead(A4)*4.882,analogRead(A5)*4.882);
-                  gsm.SendSMS(phone_num, string ); 
+                sprintf(string, "A0:%i A1:%i A2:%i A3:%i A4:%i A5:%i",analogRead(0),analogRead(1),analogRead(2),analogRead(3),analogRead(4),analogRead(5));
+                gsm.SendSMS(phone_num, string ); 
               }
               else if( strstr(subStr(sms_text," ",2), "INPUTS")!=NULL)
               {
