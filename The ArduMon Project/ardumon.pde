@@ -21,11 +21,7 @@
 # 1)An Arduino UNO, MEGA or compatible board                                             # 
 # 2)An Advanced GPRS Shield from SiGAlabs (http://www.sigalabs.com)                      #
 # 3)The Arduino library of the shield copied to your <ArduinoIDE>\libraries subdirectory #
-<<<<<<< HEAD
 #    Download it from here (http://github.com/sigalabs/Advanced-GPRS-Shield)             #
-=======
-#   Download it from here (http://github.com/sigalabs/Advanced-GPRS-Shield)              #
->>>>>>> 0402b4d3b16910a6abeb24eb9731ccb77fd2a038
 # 4)A SIM Card from your provider with PIN CODE DISABLED                                 #
 ########################################################################################## 
 */
