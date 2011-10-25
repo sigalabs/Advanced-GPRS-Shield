@@ -174,10 +174,13 @@ void loop()
               }
             }
 
-          // and delete received SMS 
-          // to leave place for next new SMS's
-          // ---------------------------------
-          gsm.DeleteSMS(position);
+            // and delete received SMS 
+            // to leave place for next new SMS's
+            // ---------------------------------
+            while(gsm.DeleteSMS(position)!=1)
+            {
+               delay(500); 
+            }
         }
       }
     }
