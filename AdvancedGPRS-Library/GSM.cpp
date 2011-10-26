@@ -127,8 +127,8 @@ void GSM::InitParam(byte group)
       SendATCmdWaitResp("AT&F0", 1000, 20, "OK", 5);      
       // switch off echo
       SendATCmdWaitResp("ATE0", 500, 20, "OK", 5);
-      // setup fixed baud rate
-      // SendATCmdWaitResp("AT+IPR=9600", 500, 20, "OK", 5);
+      // setup auto baud rate
+      SendATCmdWaitResp("AT+IPR=0", 500, 20, "OK", 5);
       SetCommLineStatus(CLS_FREE);
       break;
 
