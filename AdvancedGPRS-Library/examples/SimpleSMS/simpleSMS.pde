@@ -45,7 +45,7 @@ GSM gsm;
 void setup()
 {
   // initialization of serial line
-  gsm.InitSerLine(115200);		
+  gsm.InitSerLine(9600);		
   // turn on GSM module
   gsm.TurnOn();
 
