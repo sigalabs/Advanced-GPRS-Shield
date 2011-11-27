@@ -23,7 +23,7 @@
 
 #include "WProgram.h"
 
-#define GSM_LIB_VERSION 010 // library version X.YY (e.g. 1.00)
+#define GSM_LIB_VERSION 011 // library version X.YY (e.g. 1.00)
 
 
 
@@ -45,6 +45,7 @@
 #define COMM_BUF_LEN        200
 
 #include "AT.h"
+#include "GSM_GPRS.h"
 
 
 
@@ -104,9 +105,15 @@ class GSM : public AT
     // checks if module is registered in the GSM network
     // must be called regularly
     byte CheckRegistration(void);
-    // returns registration state
+	// returns registration state
     byte IsRegistered(void);
-    // returns whether complete initialization was made
+    // must be called regularly
+    char CheckBattery(void);
+	byte IsCharging(void);
+	//Batery related
+	byte IsChargerConnected(void);
+	byte IsBatteryFull(void);
+	// returns whether complete initialization was made
     byte IsInitialized(void);
     // finds out the status of call
     byte CallStatus(void);
@@ -133,9 +140,27 @@ class GSM : public AT
     // Support functions
     char *ReadToken(char *str, char *buf, char delimiter);
     char *Skip(char *str, char match);
+	
+	//Battery
+	byte batteryLevel;
+	int batteryVoltage;
+	
 
-
-
+	
+  //=================================================================
+    // GPRS section: implementaion of methods are placed
+    //                      in the GSM_GPRS.cpp  
+    //=================================================================
+    int GPRSLibVer(void);
+    char InitGPRS(char* apn, char* login, char* password);
+    char EnableGPRS(byte open_mode);
+    char DisableGPRS(void);
+    char OpenSocket(byte socket_type, uint16_t remote_port, char* remote_addr);
+    char CloseSocket(void);
+    void SendData(char* str_data);
+    void SendData(byte* data_buffer, unsigned short size);
+    uint16_t RcvData(uint16_t start_comm_tmout, uint16_t max_interchar_tmout, byte** ptr_to_rcv_data);
+    signed short StrInBin(byte* p_bin_data, char* p_string_to_search, unsigned short size);
 
 
   private:

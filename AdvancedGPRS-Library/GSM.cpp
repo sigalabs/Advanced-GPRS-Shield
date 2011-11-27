@@ -44,10 +44,7 @@ GSM::GSM(void)
 {
   // set some GSM pins as inputs, some as outputs
   pinMode(GSM_ON, OUTPUT);               // sets pin 4 as output
- 
-
-  
-  // not registered yet
+   // not registered yet
   module_status = STATUS_NONE;
   
  }
@@ -78,7 +75,7 @@ byte GSM::IsInitialized(void)
   to the AT command
   - if YES  nothing is made 
   - if NO   switch on sequence is repeated until there is a response
-            from GSM module
+				from GSM module
 **********************************************************/
 void GSM::TurnOn(void)
 {
@@ -692,4 +689,135 @@ char *GSM::ReadToken(char *str, char *buf, char delimiter) {
   }
   *buf = '\0';
   return str;
+}
+
+/**********************************************************
+Method update status of battery charging
+
+return: 
+	  BATT_NOT_CHARGING - no charger connected
+	  BATT_CHARGING     - battery is charging
+	  BATT_FULL         - battery is full
+	  
+OK ret val:
+        -----------
+        1 - Battery status updated
+		0 - Battery status not updated
+		
+ERROR ret. val:
+        ---------------
+        -1 - comm. line to the GSM module is not free
+        -2 - GSM module didn't answer in timeout
+**********************************************************/
+char GSM::CheckBattery()
+{
+ char ret_val = -1;
+
+ char *p_char; 
+ char *p_char1;
+ char *p_char2;
+ 
+ if (CLS_FREE != GetCommLineStatus()) return (ret_val);
+ SetCommLineStatus(CLS_ATCMD);
+ ret_val = 0; // not found yet
+ 
+ Serial.print("AT+CBC\r");
+ 
+ switch (WaitResp(1000, 20, "+CBC")) {
+    case RX_TMOUT_ERR:
+      // response was not received in specific time
+      ret_val = -2;
+      break;
+
+    case RX_FINISHED_STR_RECV:
+      if(IsStringReceived("+CBC: 0")){
+		SetBattChargeStatus(BATT_NOT_CHARGING);
+	  }
+	  else if(IsStringReceived("+CBC: 1")){
+		SetBattChargeStatus(BATT_CHARGING);
+	  }
+	  else if(IsStringReceived("+CBC: 2")){
+		SetBattChargeStatus(BATT_FULL);
+	  }
+	  
+      p_char = strchr((char *)(comm_buf),',');
+      if (p_char != NULL) {
+        p_char++;       // we are on the first battery level character
+        // find out ',' as finish character of battery level string
+        p_char1 = strchr((char *)(p_char),',');
+        if (p_char1 != NULL) {
+          *p_char1 = 0; // end of string
+          batteryLevel= atoi(p_char); //Convert string to integer 0-100%
+		  p_char1++;//Move on to first voltage number
+		  p_char2 = strchr((char *)(p_char1),'\r');//find the end of the line
+		  if (p_char != NULL) {
+			p_char2 = 0;
+			batteryVoltage= atoi(p_char1);//Convert bat voltage to integer
+			ret_val = 1;
+		  }
+		}
+      }
+	 
+      break;
+
+    case RX_FINISHED_STR_NOT_RECV:
+      // only OK or ERROR => no phone number
+      ret_val = 0; 
+      break;
+  }
+
+  SetCommLineStatus(CLS_FREE);
+  return (ret_val);
+
+}
+
+/**********************************************************
+Methods return the state of battery charging
+
+- these methods do not communicate with the GSM module
+
+return values: 
+      0 - not true (not active)
+      >0 - true (active)
+**********************************************************/
+byte GSM::IsCharging()
+{
+  if(GetBattChargeStatus()==BATT_CHARGING)
+	return 1;
+  else
+	return 0;
+}
+
+/**********************************************************
+Methods return the state of the charger
+
+- these methods do not communicate with the GSM module
+
+return values: 
+      0 - not true (not connected)
+      >0 - true (connected)
+**********************************************************/
+byte GSM::IsChargerConnected()
+{
+  if(GetBattChargeStatus()==BATT_NOT_CHARGING)
+	return 0;
+  else
+	return 1;
+}
+
+/**********************************************************
+Methods returns if battery charge completed
+
+- these methods do not communicate with the GSM module
+
+return values: 
+      0 - not true (not completed)
+      >0 - true (completed)
+**********************************************************/
+byte GSM::IsBatteryFull()
+{
+  if(GetBattChargeStatus()==BATT_FULL)
+	return 1;
+  else
+	return 0;
 }

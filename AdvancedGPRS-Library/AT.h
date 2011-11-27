@@ -31,7 +31,7 @@ GSM module and thus can be interpreted as AT commands.
 
 
 
-#define AT_LIB_VERSION 010 // library version X.YY (e.g. 1.00) 100 means 1.00
+#define AT_LIB_VERSION 011 // library version X.YY (e.g. 1.00) 100 means 1.00
 
 
 
@@ -135,6 +135,15 @@ enum registration_ret_val_enum
   REG_LAST_ITEM
 };
 
+enum battery_charge_enum
+{
+  BATT_NOT_CHARGING=0,
+  BATT_CHARGING =1,
+  BATT_FULL,
+  
+  BATT_LAST_ITEM
+};
+
 enum call_ret_val_enum
 {
   CALL_NONE = 0,
@@ -198,7 +207,11 @@ class AT
     // get comm. line status
     inline byte GetCommLineStatus(void) {return comm_line_status;};
     
-    
+	//set batt charging status
+    inline void SetBattChargeStatus(byte new_status) {batt_charge_status = new_status;};
+    // get batt charging status
+    inline byte GetBattChargeStatus(void) {return batt_charge_status;};
+	
     // SMS's methods 
     char InitSMSMemory(void);
     char SendSMS(char *number_str, char *message_str);
@@ -230,6 +243,7 @@ class AT
 
   private:
     byte comm_line_status;
+	byte batt_charge_status;
 
     // variables connected with communication buffer
     byte *p_comm_buf;               // pointer to the communication buffer   

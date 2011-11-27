@@ -27,15 +27,14 @@
     ------------------------------------
 	BETA    (010) 0.10   First public beta
 						 Supports Power-on, SMS messaging, Voice Calls and basic functionality.
-						 
+	BETA	(011) 0.11	 Battery charge monitoring functions added.			 
 	
 	
 	
 	TO-DO
     ---------------------------------
     - RX/TX-Pin should be realised with Softserial or normal Serial.
-	- GPRS Functionality
-	- Battery/Charging Monitoring
+
 */
 
 

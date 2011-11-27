@@ -57,7 +57,7 @@ void setup()
   }
      
    //Send SMS->   Number   ,         Text Message  
-   gsm.SendSMS("6937800917", "Hello! I am the Advanced GPRS Shield by SiGAlabs!"); 
+   gsm.SendSMS("1234567890", "Hello! I am the Advanced GPRS Shield by SiGAlabs!"); 
 
 
 }
