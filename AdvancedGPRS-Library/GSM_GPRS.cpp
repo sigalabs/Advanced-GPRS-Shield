@@ -148,7 +148,7 @@ char GSM::EnableGPRS(byte open_mode)
       ret_val = SendATCmdWaitResp("AT+CSTT", 1000, 1000, "OK", 1);
       if (ret_val == AT_RESP_OK) {
         // cstt OK
-		ret_val = SendATCmdWaitResp("AT+CIICR", 10000, 1000, "OK", 1);
+		ret_val = SendATCmdWaitResp("AT+CIICR", 60000, 1000, "OK", 1);
 		if (ret_val == AT_RESP_OK) {
 			// context was activated
 			SendATCmdWaitResp("AT+CIFSR", 2000, 1000, "", 1);//get ip
