@@ -464,10 +464,10 @@ char AT::SendSMS(char *number_str, char *message_str)
 
 #ifdef DEBUG_SMS_ENABLED
       // SMS will not be sent = we will not pay => good for debugging
-      outSerial.write(0x1b);
+      outSerial.write(27);
       if (RX_FINISHED_STR_RECV == WaitResp(START_XXLONG_COMM_TMOUT, MAX_INTERCHAR_TMOUT, "OK")) {
 #else 
-      outSerial.write(0x1a);
+      outSerial.write(26);
       if (RX_FINISHED_STR_RECV == WaitResp(START_XXLONG_COMM_TMOUT, MAX_INTERCHAR_TMOUT, "+CMGS")) {
 #endif
         // SMS was send correctly 
